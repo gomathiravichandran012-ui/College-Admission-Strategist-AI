@@ -1,0 +1,73 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Course Recommendations</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f4ef;
+            color: #243b3a;
+            margin: 0;
+            padding: 35px;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+        }
+        h1 { color: #153b39; }
+        .course-card {
+            background: white;
+            padding: 22px;
+            margin: 18px 0;
+            border-radius: 10px;
+            border: 1px solid #e5e5dc;
+        }
+        .course-card h2 { color: #153b39; }
+        .back {
+            color: #153b39;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <h1>Recommended Courses</h1>
+
+    <p>Welcome, {{ student.full_name }}</p>
+
+    <p>
+        Stream: {{ student.education_stream }} |
+        Percentage: {{ student.percentage }}%
+    </p>
+
+    {% if recommended_courses %}
+
+        {% for course in recommended_courses %}
+            <div class="course-card">
+                <h2>{{ course.course_name }}</h2>
+                <p><strong>Category:</strong> {{ course.course_category }}</p>
+                <p><strong>Minimum Percentage:</strong>
+                    {{ course.minimum_percentage }}%
+                </p>
+                <p><strong>Duration:</strong>
+                    {{ course.duration_years }} years
+                </p>
+                <p>{{ course.course_description }}</p>
+            </div>
+        {% endfor %}
+
+    {% else %}
+
+        <p>No matching courses found. Please check your profile details
+        or try again later.</p>
+
+    {% endif %}
+
+    <a class="back" href="{% url 'dashboard' %}">Back to Dashboard</a>
+
+</div>
+</body>
+</html>

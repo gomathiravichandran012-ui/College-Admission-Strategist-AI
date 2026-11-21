@@ -1,0 +1,191 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Update Academic Profile</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #f5f4ef;
+            color: #243b3a;
+        }
+
+        header {
+            background: #153b39;
+            color: white;
+            padding: 18px 7%;
+            font-size: 21px;
+            font-weight: 700;
+        }
+
+        header span {
+            color: #c5d9a5;
+        }
+
+        main {
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .form-card {
+            background: white;
+            padding: 32px;
+            border-radius: 14px;
+            border: 1px solid #e5e5dc;
+        }
+
+        h1 {
+            color: #153b39;
+            font-size: 27px;
+            margin-top: 0;
+        }
+
+        .intro {
+            color: #71817a;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .field {
+            margin-bottom: 20px;
+        }
+
+        .field label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .field input,
+        .field select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d7ded7;
+            border-radius: 7px;
+            font-size: 15px;
+            background: #fbfcf9;
+        }
+
+        .field input:focus,
+        .field select:focus {
+            outline: none;
+            border-color: #52796f;
+        }
+
+        .help {
+            color: #7a8984;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 28px;
+        }
+
+        button,
+        .back {
+            padding: 12px 20px;
+            border-radius: 7px;
+            font-size: 14px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        button {
+            border: none;
+            background: #153b39;
+            color: white;
+        }
+
+        .back {
+            border: 1px solid #cbd5ce;
+            color: #153b39;
+        }
+
+        button:hover {
+            background: #315a55;
+        }
+
+        @media (max-width: 600px) {
+            .form-card {
+                padding: 22px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        College <span>Strategist</span>
+    </header>
+
+    <main>
+
+        <section class="form-card">
+
+            <h1>Update Your Profile</h1>
+
+            <p class="intro">
+                Add your academic details to help us understand
+                your educational background.
+            </p>
+
+            <form method="POST">
+                {% csrf_token %}
+
+                {% for field in form %}
+
+                    <div class="field">
+
+                        <label for="{{ field.id_for_label }}">
+                            {{ field.label }}
+                        </label>
+
+                        {{ field }}
+
+                        {% if field.errors %}
+                            <p class="help">{{ field.errors }}</p>
+                        {% endif %}
+
+                    </div>
+
+                {% endfor %}
+
+                {% if form.non_field_errors %}
+                    <p class="help">{{ form.non_field_errors }}</p>
+                {% endif %}
+
+                <div class="actions">
+
+                    <button type="submit">
+                        Save Profile
+                    </button>
+
+                    <a class="back" href="{% url 'dashboard' %}">
+                        Cancel
+                    </a>
+
+                </div>
+
+            </form>
+
+        </section>
+
+    </main>
+
+</body>
+</html>

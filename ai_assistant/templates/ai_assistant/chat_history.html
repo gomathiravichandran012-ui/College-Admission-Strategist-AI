@@ -1,0 +1,185 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Chat History | College Admission Strategist AI</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6fb;
+            color: #263247;
+            padding: 30px 15px;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: auto;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4338ca, #7c3aed);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 18px;
+            background: white;
+            color: #4338ca;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .chat-card {
+            background: white;
+            padding: 22px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+        }
+
+        .question-title {
+            color: #4338ca;
+            margin-bottom: 10px;
+        }
+
+        .answer-title {
+            color: #059669;
+            margin: 20px 0 10px;
+        }
+
+        .question {
+            background: #f1f0ff;
+            padding: 15px;
+            border-radius: 8px;
+            line-height: 1.7;
+            white-space: pre-wrap;
+        }
+
+        .answer {
+            background: #f0fdf4;
+            padding: 15px;
+            border-radius: 8px;
+            line-height: 1.8;
+            overflow-wrap: anywhere;
+        }
+
+        .answer p {
+            margin-bottom: 12px;
+        }
+
+        .answer ul, .answer ol {
+            padding-left: 25px;
+            margin: 10px 0;
+        }
+
+        .answer li {
+            margin-bottom: 8px;
+        }
+
+        .answer h1, .answer h2, .answer h3 {
+            margin: 15px 0 10px;
+        }
+
+        .answer strong {
+            color: #166534;
+        }
+
+        .date {
+            display: block;
+            margin-top: 18px;
+            color: #777;
+            font-size: 13px;
+        }
+
+        .empty {
+            background: white;
+            padding: 35px;
+            text-align: center;
+            border-radius: 12px;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 15px 10px;
+            }
+
+            .header, .chat-card {
+                padding: 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <h1>📚 My Chat History</h1>
+        <p>College Admission Strategist AI</p>
+
+        <a href="/chat/" class="back-btn">
+            ← Back to Chat
+        </a>
+    </div>
+
+    {% for chat in chats %}
+
+    <div class="chat-card">
+
+        <h3 class="question-title">👤 Your Question</h3>
+
+        <div class="question">
+            {{ chat.user_message }}
+        </div>
+
+        <h3 class="answer-title">🤖 AI Assistant</h3>
+
+        <div class="answer">
+            {{ chat.formatted_response|safe }}
+        </div>
+
+        <small class="date">
+            🕒 {{ chat.created_at|date:"d M Y, h:i A" }}
+        </small>
+
+    </div>
+
+    {% empty %}
+
+    <div class="empty">
+        <h2>No Chat History Yet</h2>
+        <p>Your conversations will appear here.</p>
+        <br>
+        <a href="/chat/">Start Chatting</a>
+    </div>
+
+    {% endfor %}
+
+</div>
+
+</body>
+</html>

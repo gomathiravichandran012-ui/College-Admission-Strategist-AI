@@ -1,0 +1,349 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Dashboard | College Strategist</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #f5f4ef;
+            color: #243b3a;
+        }
+
+        header {
+            background: #153b39;
+            color: white;
+            padding: 18px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            font-size: 21px;
+            font-weight: 700;
+        }
+
+        .brand span {
+            color: #c5d9a5;
+        }
+
+        .logout {
+            color: white;
+            text-decoration: none;
+            border: 1px solid #a9c3b6;
+            padding: 9px 17px;
+            border-radius: 7px;
+        }
+
+        main {
+            max-width: 1100px;
+            margin: 45px auto;
+            padding: 0 22px;
+        }
+
+        .welcome {
+            background: #e5ecdf;
+            padding: 35px;
+            border-radius: 15px;
+            border-left: 5px solid #52796f;
+            margin-bottom: 28px;
+        }
+
+        .welcome small {
+            color: #52796f;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .welcome h1 {
+            font-size: 32px;
+            margin: 12px 0;
+            color: #153b39;
+        }
+
+        .welcome p {
+            color: #526563;
+            line-height: 1.7;
+        }
+
+        .section-title {
+            font-size: 21px;
+            margin: 30px 0 15px;
+        }
+
+        .profile-card {
+            background: white;
+            padding: 28px;
+            border-radius: 13px;
+            border: 1px solid #e5e5dc;
+        }
+
+        .profile-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .profile-heading h2 {
+            font-size: 19px;
+            margin: 0;
+        }
+
+        .profile-heading span {
+            background: #edf3e8;
+            color: #52796f;
+            padding: 7px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+
+        .details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .detail {
+            background: #f8f8f4;
+            padding: 16px;
+            border-radius: 8px;
+        }
+
+        .detail label {
+            display: block;
+            color: #7a8984;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .detail p {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 600;
+            overflow-wrap: anywhere;
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 22px;
+        }
+
+        .btn {
+            display: inline-block;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 7px;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .btn:hover {
+            opacity: 0.85;
+        }
+
+        .profile-btn {
+            background: #153b39;
+        }
+
+        .course-btn {
+            background: #52796f;
+        }
+
+        .college-btn {
+            background: #315a55;
+        }
+
+        .chat-btn {
+            background: #6b4ca5;
+        }
+
+        .history-btn {
+            background: #a36b35;
+        }
+
+        .guidance {
+            margin-top: 25px;
+            padding: 23px;
+            background: #153b39;
+            color: white;
+            border-radius: 12px;
+        }
+
+        .guidance h3 {
+            margin-top: 0;
+            color: #d5e4c4;
+        }
+
+        .guidance p {
+            line-height: 1.7;
+            color: #e1eae4;
+            margin-bottom: 0;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: #7a8984;
+            font-size: 13px;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding: 16px 20px;
+            }
+
+            .brand {
+                font-size: 17px;
+            }
+
+            main {
+                margin-top: 25px;
+            }
+
+            .welcome {
+                padding: 24px;
+            }
+
+            .welcome h1 {
+                font-size: 25px;
+            }
+
+            .details {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="brand">
+        College <span>Strategist</span>
+    </div>
+
+    <a class="logout" href="{% url 'logout' %}">
+        Logout
+    </a>
+</header>
+
+<main>
+
+    <section class="welcome">
+        <small>Student workspace</small>
+
+        <h1>Welcome, {{ student.full_name }}!</h1>
+
+        <p>
+            Your college journey starts with the right information.
+            Review your academic details and prepare for your next step.
+        </p>
+    </section>
+
+    <h2 class="section-title">Your Academic Profile</h2>
+
+    <section class="profile-card">
+
+        <div class="profile-heading">
+            <h2>Student Information</h2>
+            <span>My Account</span>
+        </div>
+
+        <div class="details">
+
+            <div class="detail">
+                <label>Full Name</label>
+                <p>{{ student.full_name }}</p>
+            </div>
+
+            <div class="detail">
+                <label>State</label>
+                <p>{{ student.state|default:"Not added" }}</p>
+            </div>
+
+            <div class="detail">
+                <label>Education Stream</label>
+                <p>{{ student.education_stream|default:"Not added" }}</p>
+            </div>
+
+            <div class="detail">
+                <label>Academic Percentage</label>
+                <p>
+                    {% if student.percentage != None %}
+                        {{ student.percentage }}%
+                    {% else %}
+                        Not added
+                    {% endif %}
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+    <h2 class="section-title">Explore Your Student Services</h2>
+
+    <div class="actions">
+
+        <a href="{% url 'profile_update' %}"
+           class="btn profile-btn">
+            Update My Profile
+        </a>
+
+        <a href="{% url 'course_recommendations' %}"
+           class="btn course-btn">
+            Explore Recommended Courses
+        </a>
+
+        <a href="{% url 'college_recommendations' %}"
+           class="btn college-btn">
+            Explore Recommended Colleges
+        </a>
+
+        <a href="{% url 'chat' %}"
+           class="btn chat-btn">
+            🤖 AI Admission Assistant
+        </a>
+
+        <a href="{% url 'chat_history' %}"
+           class="btn history-btn">
+            📚 My Chat History
+        </a>
+
+    </div>
+
+    <section class="guidance">
+        <h3>Your Next Step</h3>
+        <p>
+            Keep your academic information ready.
+            Explore courses, colleges and use your AI Admission Assistant
+            to prepare for your college journey.
+        </p>
+    </section>
+
+</main>
+
+<footer>
+    College Strategist | Student Guidance System
+</footer>
+
+</body>
+</html>

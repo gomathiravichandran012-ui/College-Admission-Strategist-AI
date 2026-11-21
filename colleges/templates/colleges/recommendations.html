@@ -1,0 +1,115 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Recommendations</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f4ef;
+            color: #243b3a;
+            margin: 0;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 950px;
+            margin: auto;
+        }
+
+        h1 {
+            color: #153b39;
+        }
+
+        .college-card {
+            background: white;
+            padding: 24px;
+            margin: 20px 0;
+            border-radius: 12px;
+            border: 1px solid #e5e5dc;
+        }
+
+        .college-card h2 {
+            color: #153b39;
+        }
+
+        .website {
+            color: #52796f;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 20px;
+            color: #153b39;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <h1>Recommended Colleges</h1>
+
+    {% if student %}
+        <p>Welcome, {{ student.full_name }}</p>
+        <p>Your State: {{ student.state }}</p>
+    {% endif %}
+
+    {% if recommended_colleges %}
+
+        {% for college in recommended_colleges %}
+
+            <div class="college-card">
+
+                <h2>{{ college.college_name }}</h2>
+
+                <p><strong>Location:</strong>
+                    {{ college.location }}</p>
+
+                <p><strong>State:</strong>
+                    {{ college.state }}</p>
+
+                <p><strong>Type:</strong>
+                    {{ college.college_type }}</p>
+
+                <p><strong>Annual Fees:</strong>
+                    {% if college.annual_fees %}
+                        ₹{{ college.annual_fees }}
+                    {% else %}
+                        Not provided
+                    {% endif %}
+                </p>
+
+                <p>{{ college.description }}</p>
+
+                {% if college.website %}
+                    <a class="website"
+                       href="{{ college.website }}"
+                       target="_blank"
+                       rel="noopener">
+                        Visit College Website
+                    </a>
+                {% endif %}
+
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>No colleges found for your state.
+           Please check again later.</p>
+
+    {% endif %}
+
+    <a class="back" href="{% url 'dashboard' %}">
+        Back to Dashboard
+    </a>
+
+</div>
+</body>
+</html>

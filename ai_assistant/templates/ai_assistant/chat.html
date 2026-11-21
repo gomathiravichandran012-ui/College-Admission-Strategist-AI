@@ -1,0 +1,237 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Admission AI Assistant</title>
+
+    {% csrf_token %}
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 40px auto;
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            color: #243b75;
+            text-align: center;
+        }
+
+        #chat-box {
+            height: 400px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+
+        .message {
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 10px;
+            max-width: 80%;
+            white-space: pre-wrap;
+        }
+
+        .user {
+            background: #dbeafe;
+            margin-left: auto;
+        }
+
+        .ai {
+            background: #e2e8f0;
+            margin-right: auto;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        input {
+            flex: 1;
+            padding: 13px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+
+        button {
+            padding: 12px 16px;
+            border: none;
+            border-radius: 8px;
+            background: #243b75;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #16264f;
+        }
+
+        button:disabled {
+            background: #888;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>🎓 College Admission Strategist AI</h2>
+        <p style="text-align:center;">Your Personal Admission Assistant</p>
+
+        <div id="chat-box">
+            <div class="message ai">
+                Hello! Welcome. Ask me about courses and college admissions.
+            </div>
+        </div>
+
+        <div class="controls">
+            <input type="text" id="user-input"
+                   placeholder="Type your question...">
+
+            <button id="send-button" onclick="sendMessage()">Send</button>
+
+            <button onclick="startVoice()">🎤</button>
+        </div>
+    </div>
+
+    <script>
+
+        async function sendMessage() {
+
+            const input = document.getElementById("user-input");
+            const message = input.value.trim();
+
+            if (message === "") return;
+
+            const chatBox = document.getElementById("chat-box");
+            const sendButton = document.getElementById("send-button");
+
+            const userMessage = document.createElement("div");
+            userMessage.className = "message user";
+            userMessage.textContent = message;
+            chatBox.appendChild(userMessage);
+
+            input.value = "";
+            sendButton.disabled = true;
+            sendButton.textContent = "Thinking...";
+
+            const loadingMessage = document.createElement("div");
+            loadingMessage.className = "message ai";
+            loadingMessage.textContent = "AI is thinking...";
+            chatBox.appendChild(loadingMessage);
+
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            try {
+
+                const csrfToken = document.querySelector(
+                    '[name=csrfmiddlewaretoken]'
+                ).value;
+
+                const response = await fetch("/chat/api/", {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": csrfToken
+                    },
+
+                    body: JSON.stringify({
+                        message: message
+                    })
+                });
+
+                const data = await response.json();
+
+                loadingMessage.remove();
+
+                if (!response.ok) {
+                    throw new Error(data.error || "Something went wrong.");
+                }
+
+                const aiMessage = document.createElement("div");
+                aiMessage.className = "message ai";
+                aiMessage.textContent = data.reply;
+                chatBox.appendChild(aiMessage);
+
+                // AI voice output
+                if ("speechSynthesis" in window) {
+                    const speech = new SpeechSynthesisUtterance(data.reply);
+                    speech.lang = "en-IN";
+                    window.speechSynthesis.speak(speech);
+                }
+
+            } catch (error) {
+
+                loadingMessage.remove();
+
+                const errorMessage = document.createElement("div");
+                errorMessage.className = "message ai";
+                errorMessage.textContent = "Error: " + error.message;
+                chatBox.appendChild(errorMessage);
+
+            } finally {
+
+                sendButton.disabled = false;
+                sendButton.textContent = "Send";
+                chatBox.scrollTop = chatBox.scrollHeight;
+
+            }
+        }
+
+
+        function startVoice() {
+
+            const SpeechRecognition =
+                window.SpeechRecognition || window.webkitSpeechRecognition;
+
+            if (!SpeechRecognition) {
+                alert("Voice recognition is not supported. Please use Google Chrome.");
+                return;
+            }
+
+            const recognition = new SpeechRecognition();
+
+            recognition.lang = "en-IN";
+            recognition.start();
+
+            recognition.onresult = function(event) {
+
+                document.getElementById("user-input").value =
+                    event.results[0][0].transcript;
+
+            };
+
+            recognition.onerror = function(event) {
+                alert("Voice Error: " + event.error);
+            };
+        }
+
+
+        document.getElementById("user-input").addEventListener(
+            "keydown",
+            function(event) {
+                if (event.key === "Enter") {
+                    sendMessage();
+                }
+            }
+        );
+
+    </script>
+</body>
+</html>
