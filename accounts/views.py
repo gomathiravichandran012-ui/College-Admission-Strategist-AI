@@ -97,7 +97,9 @@ def dashboard_view(request):
 @login_required
 def profile_update_view(request):
 
-    student = StudentProfile.objects.get(user=request.user)
+    student, created = StudentProfile.objects.get_or_create(
+    user=request.user
+)
 
     if request.method == 'POST':
         form = StudentProfileForm(request.POST, instance=student)

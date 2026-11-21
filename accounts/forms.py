@@ -1,5 +1,7 @@
+
 from django import forms
 from django.contrib.auth.models import User
+from students.models import StudentProfile
 
 
 class StudentRegistrationForm(forms.Form):
@@ -62,14 +64,13 @@ class StudentRegistrationForm(forms.Form):
         return cleaned_data
 
 
-from students.models import StudentProfile
-
 class StudentProfileForm(forms.ModelForm):
 
     class Meta:
         model = StudentProfile
 
         fields = [
+            'full_name',
             'date_of_birth',
             'phone_number',
             'state',
@@ -78,6 +79,9 @@ class StudentProfileForm(forms.ModelForm):
         ]
 
         widgets = {
+            'full_name': forms.TextInput(
+                attrs={'placeholder': 'Enter your full name'}
+            ),
             'date_of_birth': forms.DateInput(
                 attrs={'type': 'date'}
             ),

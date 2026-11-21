@@ -9,6 +9,7 @@ class StudentProfile(models.Model):
         ('Commerce', 'Commerce'),
         ('Arts', 'Arts'),
         ('Other', 'Other'),
+        ('Engineering', 'Engineering'),
     ]
 
     user = models.OneToOneField(
